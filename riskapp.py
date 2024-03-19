@@ -26,7 +26,7 @@ territories = {
     "bco": Territory("Braavosian Coastlands", True, "Andalos"),
     "hno": Territory("Hills of Norvos", False, "Andalos"),
 
-    "urh": Territory("Upper Rhoyne", True, "Andalos"),
+    "urh": Territory("Sarnor", True, "Andalos"),
 
     # Add more territories as needed
 }
