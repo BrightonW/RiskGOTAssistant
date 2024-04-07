@@ -1,13 +1,15 @@
 
 
-********************************
+***************************************************************
     Welcome to my Risk:Game of Thrones Assistant
 
     This program is only developed for the skirmish 
           gamemode. More will come... if/when we start playing
            the harder gamemode(Dominion)
-    You will now begin the game. Remember to keep track of your holdings. 
-        If you would like to see all commands, simply type 'help'.  
-********************************
+
+    You will now begin the game. Remember to keep track of your
+     holdings. If you would like to see all commands, 
+     simply type 'help'.  
+****************************************************************
 
 

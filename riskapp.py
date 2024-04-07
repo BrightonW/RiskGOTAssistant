@@ -1,4 +1,5 @@
 #RiskApp
+import sys
 
 CONST_ESSOS_TERR = 12
 class Territory:
@@ -181,9 +182,15 @@ def startTerri():
         " of the next word")
     while len(terr_data)<CONST_ESSOS_TERR:
         initTerri = input("Input your territories seperated by a comma:\n")
+        if initTerri[0] == 'q' or initTerri[0] == 'exit':
+            print("Exiting game...")
+            exit()
         addTerr(initTerri)
 
                 
 if __name__ == "__main__":
+    with open('menu.txt', 'r') as file:
+                menu = file.read()
+                print(menu)
     startTerri()
     main()
