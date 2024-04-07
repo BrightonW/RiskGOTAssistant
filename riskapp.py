@@ -1,15 +1,19 @@
 #RiskApp
 
-CONST_NUM_START_TERRITORY = 8
+CONST_ESSOS_TERR = 5
 class Territory:
     def __init__(self, name: str, castle: bool, region) -> None:
         self.name = name
         self.castle = castle
         self.region = region
 class Region:
-    def __init__(self, name: str, power: int,) -> None:
+    def __init__(self, name: str, power: int, terr: int) -> None:
         self.name = name
         self.power = power
+        self.terr = terr
+
+terr_data = []
+power = 0
 
 # Define territories and regions using dictionaries
 territories = {
@@ -55,35 +59,97 @@ territories = {
     "sea": Territory("The Sea of Sights", False, "Lands of Long Summer"),
 }
 regions = {
-    "The Disputed Lands": Region("The Disputed Lands", 3),
-    "Andalos": Region("Andalos", 4),
-    "Slaver's Bay": Region("Slavers' Bat", 3),
-    "Jade Sea Coast": Region("Jade Sea Coast", 1),
-    "Lands of Long Summer": Region("Lands of Long Summer", 1),
-    "The Dothraki Sea": Region("The Dothraki Sea", 4),
+    "The Disputed Lands": Region("The Disputed Lands", 3, 6),
+    "Andalos": Region("Andalos", 4, 7),
+    "Slavers' Bay": Region("Slavers' Bat", 3, 6),
+    "Jade Sea Coast": Region("Jade Sea Coast", 1, 4),
+    "Lands of Long Summer": Region("Lands of Long Summer", 1, 4),
+    "The Dothraki Sea": Region("The Dothraki Sea", 4, 7),
 }
 
+countRegion = {
+    "The Disputed Lands": 0,
+    "Andalos": 0,
+    "Slavers' Bay": 0,
+    "Jade Sea Coast": 0,
+    "Lands of Long Summer": 0,
+    "The Dothraki Sea": 0,
+}
+
+def checkRegion():
+    for r in countRegion:
+        if countRegion[r] == regions[r].terr:
+            print()
+            print(f"Completed region: {r}")
+
 def reinforce_eq(power):
+    forceNum = 0
     # Minmum reinforcements is 3
     if power <=11:
-        return 3
+        forceNum += 3
     else:
         # Rule in the game to divide by three and round down
-        return power//3
-"""""
+        forceNum+= power//3
+    print("Reinforcements count: ", forceNum)
+
+def printTerr():
+    print("\n***TERRITORY UPDATE***\n")
+    print("Your territories are: ", end = "")
+    for ter in terr_data:
+        print(ter.name, end= ", ")
+    print()
+    checkRegion()
+    print()
+    reinforce_eq(power)
+    print()
+
+def addTerr(string):
+    global power
+    myterr = [item.strip() for part in string.split(',') for item in part.split()]
+    for i in myterr:
+        curr_terr = territories[i]
+        try:
+            if curr_terr in terr_data:
+                print(i + " has already been registered")
+                continue
+            terr_data.append(curr_terr)
+            power+=1
+            if curr_terr.castle == True:
+                power +=1
+            countRegion[curr_terr.region] += 1
+        except KeyError:
+            print(i + " is not a territory. Try again")
+    printTerr()
+
+def subTerr(string):
+    global power
+    myterr = [item.strip() for part in string.split(',') for item in part.split()]
+    for i in myterr:
+        curr_terr = territories[i]
+        try:
+            if curr_terr in terr_data:
+                if curr_terr.castle == True:
+                    power -=1
+                terr_data.remove(curr_terr)
+                power-=1
+                countRegion[curr_terr.region] -= 1
+                checkRegion()
+        except KeyError:
+            print(i + " is not a territory. Try again")
+    printTerr()
+    
+
 def main():
     playing = True
     while playing:
         user_input = input("Enter command: ").lower()
-
-        if user_input == "":
-            return 
+        if user_input[0] == "w":
+            addTerr(user_input[1:])
+        if user_input[0] == "l":
+            subTerr(user_input[1:])
         if user_input == 'exit' or user_input == 'q':
             playing = False
             print("Exiting game...")
-        if user_input.isdigit():
-            start_power = reinforce_eq(int(user_input))
-            print(f'Reinforcement number: {start_power}')
         if user_input == "help":
             print("************")
             print("HELP INSTRUCTIONS")
@@ -92,58 +158,23 @@ def main():
                   " territories relevant to you in the following format\n")
             print("For gain of territories: w- xyz,... (3-letter territory code)")            
             print("For loss of territories: l- xyz,... (3-letter territory code)")
-            print("Example: w- lys,vol ")
-            print("Example: l- tyr,myr ")            
+            print("Example: w lys,vol,... ")
+            print("Example: l tyr,myr,... ")            
             print("The examples denote the gains of territories lys and volantis as well as"
                   " the losses of tyr and myr")
             print("\nTo exit the assistant type 'exit' OR press CTRL+C on your keyboard")   
 
-"""     
-
-def startRein():
-    while True:
-        starting = input("First input your starting Reinforcement "
-                        "Power (number of castles): ")
-        try:
-            starting = int(starting)
-            if starting > 0:
-                print(f"Your starting reinforcement count: {reinforce_eq(starting)}")
-                break 
-            else:
-                print("Please enter a positive integer.")
-        except ValueError:
-            print("Is that a typo? Cmon bro")
 
 def startTerri():
     print("To initialise your starting territories enter your currently owned territories\n"
           "Territories are taken as a 3-letter code, this is usually the first 3 letters of the name"
           " of the territory unless the name starts with 'the', then you would just input the first 3 letters"
         " of the next word")
-    curr_terr = []
-    power = 0
-    while len(curr_terr)<3:
+    while len(terr_data)<CONST_ESSOS_TERR:
         initTerri = input("Input your territories seperated by a comma:\n")
-        myterr = [item.strip() for part in initTerri.split(',') for item in part.split()]
-        for i in myterr:
-            try:
-                if territories[i] in curr_terr:
-                    print(i + " has already been registered")
-                    continue
-                curr_terr.append(territories[i])
-                power+=1
-                if territories[i].castle == True:
-                    power +=1
-            except KeyError:
-                print(i + " is not a territory. Try again")
-    for ter in curr_terr:
-        print(ter.name, end=" ")
-    print(power)
+        addTerr(initTerri)
 
                 
-                
-       
-startTerri()
-"""""
 if __name__ == "__main__":
     print("*"*10)
     print("Welcome to my Risk:Game of Thrones assistant")
@@ -153,9 +184,6 @@ if __name__ == "__main__":
     print("You will now begin the game. Remember to keep track of your holdings. If you would "
           "like to see all commands, simply type 'help'. ") 
     print("*"*10)
-    print("\n")   
-    startRein()
+    print()   
+    startTerri()
     main()
-    
-    
-"""
