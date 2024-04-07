@@ -1,18 +1,19 @@
 #RiskApp
 
-CONST_ESSOS_TERR = 5
+CONST_ESSOS_TERR = 12
 class Territory:
     def __init__(self, name: str, castle: bool, region) -> None:
         self.name = name
         self.castle = castle
         self.region = region
 class Region:
-    def __init__(self, name: str, power: int, terr: int) -> None:
+    def __init__(self, name: str, rpower: int, terr: int) -> None:
         self.name = name
-        self.power = power
+        self.rpower = rpower
         self.terr = terr
 
 terr_data = []
+complete_region = []
 power = 0
 
 # Define territories and regions using dictionaries
@@ -77,10 +78,20 @@ countRegion = {
 }
 
 def checkRegion():
+    global power
     for r in countRegion:
         if countRegion[r] == regions[r].terr:
             print()
             print(f"Completed region: {r}")
+            if r not in complete_region:
+                complete_region.append(r)
+                power += regions[r].rpower
+        elif countRegion[r] != regions[r].terr and r in complete_region:
+                complete_region.remove(r)
+                power -= regions[r].rpower
+    print(complete_region)
+            
+
 
 def reinforce_eq(power):
     forceNum = 0
@@ -137,6 +148,9 @@ def subTerr(string):
         except KeyError:
             print(i + " is not a territory. Try again")
     printTerr()
+
+def numTerr():
+    print("Number of territories owned: ", len(terr_data))
     
 
 def main():
@@ -150,20 +164,14 @@ def main():
         if user_input == 'exit' or user_input == 'q':
             playing = False
             print("Exiting game...")
+        if user_input == 'num':
+            numTerr()
+        if user_input == 'power':
+            print("Power is : ", power)
         if user_input == "help":
-            print("************")
-            print("HELP INSTRUCTIONS")
-            print("************")
-            print("To manage taking of territories: After each turn record the losses and gains of"
-                  " territories relevant to you in the following format\n")
-            print("For gain of territories: w- xyz,... (3-letter territory code)")            
-            print("For loss of territories: l- xyz,... (3-letter territory code)")
-            print("Example: w lys,vol,... ")
-            print("Example: l tyr,myr,... ")            
-            print("The examples denote the gains of territories lys and volantis as well as"
-                  " the losses of tyr and myr")
-            print("\nTo exit the assistant type 'exit' OR press CTRL+C on your keyboard")   
-
+            with open('help.txt', 'r') as file:
+                help_content = file.read()
+                print(help_content)
 
 def startTerri():
     print("To initialise your starting territories enter your currently owned territories\n"

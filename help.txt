@@ -1,0 +1,27 @@
+
+***************
+HELP INSTRUCTIONS
+****************
+
+GAIN AND LOSS OF TERRITORIES
+
+To manage taking of territories: After each turn record the losses and gains of 
+    territories relevant to you. The system we use is the 3-letter code, 
+    which is often the first three letters of the name of the territory except when
+    the first word is 'the'. Another special case is the Dothraki Sea territories,
+    for west,east and south Dothraki Sea, input 'w'/'e'/'s' and then 'do' for 'Dothraki'
+
+For gain of territories: w xyz,... (3-letter territory code)            
+For loss of territories: l xyz,... (3-letter territory code)         
+
+The examples denote the gains of territories lys and volantis as well as
+    the losses of tyr and myr
+***********************
+
+CHECKING THE NUMBER OF TERRITORIES OWNED - type 'num'
+
+PROGRAM FUNCTIONALITIES
+
+EXIT - To exit the assistant program type 'exit' OR 'q'   
+FORCE EXIT - if the normal exit key does not work, press CTRL+C on you keyboard
+
