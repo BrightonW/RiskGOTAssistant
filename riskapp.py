@@ -89,7 +89,6 @@ def checkRegion():
         elif countRegion[r] != regions[r].terr and r in complete_region:
                 complete_region.remove(r)
                 power -= regions[r].rpower
-    print(complete_region)
             
 
 
@@ -118,8 +117,8 @@ def addTerr(string):
     global power
     myterr = [item.strip() for part in string.split(',') for item in part.split()]
     for i in myterr:
-        curr_terr = territories[i]
         try:
+            curr_terr = territories[i]
             if curr_terr in terr_data:
                 print(i + " has already been registered")
                 continue
@@ -129,15 +128,17 @@ def addTerr(string):
                 power +=1
             countRegion[curr_terr.region] += 1
         except KeyError:
+            print()
             print(i + " is not a territory. Try again")
+            print()
     printTerr()
 
 def subTerr(string):
     global power
     myterr = [item.strip() for part in string.split(',') for item in part.split()]
     for i in myterr:
-        curr_terr = territories[i]
         try:
+            curr_terr = territories[i]
             if curr_terr in terr_data:
                 if curr_terr.castle == True:
                     power -=1
@@ -184,14 +185,5 @@ def startTerri():
 
                 
 if __name__ == "__main__":
-    print("*"*10)
-    print("Welcome to my Risk:Game of Thrones assistant")
-    print("This program is only developed for the skirmish "
-          "gamemode. More will come... if/when we start playing"
-          " the harder gamemode(Dominion)")
-    print("You will now begin the game. Remember to keep track of your holdings. If you would "
-          "like to see all commands, simply type 'help'. ") 
-    print("*"*10)
-    print()   
     startTerri()
     main()
